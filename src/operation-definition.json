@@ -1,0 +1,107 @@
+{
+    "resourceType": "OperationDefinition",
+    "id": "ai-summary",
+    "url": "https://example.com/fhir/OperationDefinition/ai-summary",
+    "name": "AISummary",
+    "title": "AI Summary Generation",
+    "status": "active",
+    "kind": "operation",
+    "code": "ai-summary",
+    "description": "Generate an AI-powered summary of arbitrary text input. Useful for summarizing medical records, patient notes, or any healthcare-related documentation.",
+    "comment": "This operation uses AI to generate concise summaries while preserving key medical information. The implementation can be configured to use different AI providers (OpenAI, Claude, etc.) or fall back to rule-based summarization.",
+    "system": true,
+    "type": false,
+    "instance": false,
+    "inputProfile": "http://example.com/fhir/StructureDefinition/ai-summary-input",
+    "outputProfile": "http://example.com/fhir/StructureDefinition/ai-summary-output",
+    "parameter": [
+      {
+        "name": "text",
+        "use": "in",
+        "min": 1,
+        "max": "1",
+        "type": "string",
+        "documentation": "The text to be summarized. This can be medical records, patient notes, or any healthcare-related documentation that needs to be condensed while preserving key information."
+      },
+      {
+        "name": "maxLength",
+        "use": "in",
+        "min": 0,
+        "max": "1",
+        "type": "integer",
+        "documentation": "Optional maximum length for the summary in characters. If not provided, defaults to a reasonable length based on the input text."
+      },
+      {
+        "name": "summaryType",
+        "use": "in",
+        "min": 0,
+        "max": "1",
+        "type": "code",
+        "documentation": "Optional type of summary to generate. Valid values: 'clinical' (focus on medical facts), 'patient-friendly' (layman's terms), 'executive' (high-level overview)."
+      },
+      {
+        "name": "preserveKeywords",
+        "use": "in",
+        "min": 0,
+        "max": "*",
+        "type": "string",
+        "documentation": "Optional list of keywords or phrases that must be preserved in the summary (e.g., specific medication names, conditions, or measurements)."
+      },
+      {
+        "name": "summary",
+        "use": "out",
+        "min": 1,
+        "max": "1",
+        "type": "string",
+        "documentation": "The generated summary of the input text, preserving key medical information while reducing overall length."
+      },
+      {
+        "name": "originalLength",
+        "use": "out",
+        "min": 1,
+        "max": "1",
+        "type": "integer",
+        "documentation": "The character length of the original input text."
+      },
+      {
+        "name": "summaryLength",
+        "use": "out",
+        "min": 1,
+        "max": "1",
+        "type": "integer",
+        "documentation": "The character length of the generated summary."
+      },
+      {
+        "name": "compressionRatio",
+        "use": "out",
+        "min": 1,
+        "max": "1",
+        "type": "decimal",
+        "documentation": "The compression ratio (summary length / original length) as a decimal between 0 and 1."
+      },
+      {
+        "name": "confidence",
+        "use": "out",
+        "min": 0,
+        "max": "1",
+        "type": "decimal",
+        "documentation": "Optional confidence score for the summary quality (0.0 to 1.0). Higher values indicate higher confidence in the summary accuracy."
+      },
+      {
+        "name": "aiProvider",
+        "use": "out",
+        "min": 0,
+        "max": "1",
+        "type": "string",
+        "documentation": "The AI provider used for summary generation (e.g., 'OpenAI', 'Claude', 'Mock'). Useful for debugging and quality tracking."
+      },
+      {
+        "name": "processingTime",
+        "use": "out",
+        "min": 0,
+        "max": "1",
+        "type": "integer",
+        "documentation": "Processing time in milliseconds. Useful for performance monitoring."
+      }
+    ]
+  }

@@ -12,9 +12,10 @@ export const handler=async(medplum,event)=>{
         console.log('wrong input try again');
         return 
     }
-    const generateSummary=await GenerateSummary()
+    // console.log(input);
+    const generateSummary=await GenerateSummary(input)
     return ({
-        resourceType:'parameters',
+        resourceType:'parameter',
         parameters:[{ 
             name:"summary",
             valueString:generateSummary
@@ -34,11 +35,11 @@ const GenerateSummary=async(text)=>{
     if (process.env.AI_MODE==='mock' && !process.env.OPEN_AI_KEY){
         return await mockSummary()
     }
-    return mockSummary()
+    return mockSummary(text)
 }
 const  mockSummary=async(text)=>{
-    const summary=text
-            .replace(/\s+/g,' ')
+    // console.log(text);
+    const summary=text.replace(/\s+/g,' ')
             .split(/[!.?]+/)
             .map(s=>s.trim())
             .filter(s=>s.length>0)
@@ -61,7 +62,7 @@ const  mockSummary=async(text)=>{
     const mockSummary=`${summary[0]}. ${summary[summary.length-1]}`
     return mockSummary
 }
-export const testot=()=>{
+export const test=async()=>{
     const mockEvent = {
         input: {
           text: "The patient presented with acute chest pain and shortness of breath. Blood pressure was elevated at 180/100. The doctor prescribed medication for hypertension. Follow-up appointment scheduled in two weeks. Patient education provided on diet and exercise modifications."
@@ -72,4 +73,12 @@ export const testot=()=>{
         readResource:()=>Promise.resolve({}),
         writeResource:()=>Promise.resolve({})
     }
+    try {
+        const BotHandler=await handler(medplumCli,mockEvent)
+        console.log(`Bot Handler successfully executer ${JSON.stringify(BotHandler)}`);
+    } catch (error) {
+        console.log(`Error in calling medplum Bot `);
+        console.error(error);
+    }
 }
+test()
